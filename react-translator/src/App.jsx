@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-
 import LanguageSelector from './components/LanguageSelector';
 import Progress from './components/Progress';
 
+import './App.css'
+
 function App() {
-  const worker = useRef(null);
 
   // Model loading
   const [ready, setReady] = useState(null);
@@ -17,11 +17,15 @@ function App() {
   const [targetLanguage, setTargetLanguage] = useState('fra_Latn');
   const [output, setOutput] = useState('');
 
-  // on mount
+  // Create a reference to the worker object.
+  const worker = useRef(null);
+
+  // We use the `useEffect` hook to setup the worker as soon as the `App` component is mounted.
   useEffect(() => {
     if (!worker.current) {
+      // Create the worker if it does not yet exist.
       worker.current = new Worker(new URL('./worker.js', import.meta.url), {
-          type: 'module'
+        type: 'module'
       });
     }
 
